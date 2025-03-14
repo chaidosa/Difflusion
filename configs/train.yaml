@@ -1,0 +1,45 @@
+# SEINE Training Configuration
+
+# Path configuration
+pretrained_model_path: "pretrained/stable-diffusion-v1-4/"
+data_path: "./data/train/"  # Directory containing scene folders
+default_caption: collisons of rigid objects on top of gray table"  # Default caption prefix for all scenes
+output_dir: "output/seine_custom"
+
+# Model configuration
+model: UNet
+num_frames: 24  # Number of frames per video clip
+image_size: [224, 224]  # Height, width - adjust based on your data
+use_fp16: False  # Whether to use half precision
+enable_xformers_memory_efficient_attention: True
+gradient_checkpointing: False
+use_mask: True
+# Diffusion configuration
+diffusion_steps: 1000  # Number of diffusion steps
+noise_schedule: "linear"
+learn_sigma: False
+predict_xstart: False
+
+# Training configuration
+batch_size: 2 # Adjust based on your GPU memory
+seed: 42
+device: "cuda"
+num_workers: 4
+
+# Optimizer configuration
+lr: 1e-4
+weight_decay: 0.001
+adam_beta1: 0.9
+adam_beta2: 0.999
+lr_scheduler: "cosine"  # Options: warmup, cosine
+warmup_steps: 5000
+total_steps: 300000  # Total training steps
+max_grad_norm: 1.0  # Clip gradients, set to 0 to disable
+
+# EMA configuration
+ema_rate: 0.9999  # Set to 0 to disable EMA
+
+# Logging and saving
+log_interval: 100  # Log training metrics every N steps
+save_interval: 5000  # Save checkpoint every N steps
+resume_checkpoint: "pretrained/seine.pt"  # Path to checkpoint to resume from, empty to start fresh

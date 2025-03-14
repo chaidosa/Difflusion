@@ -20,7 +20,9 @@ def get_lr_scheduler(optimizer, name, **kwargs):
         return customized_lr_scheduler(optimizer, **kwargs)
     elif name == 'cosine':
         from torch.optim.lr_scheduler import CosineAnnealingLR
-        return CosineAnnealingLR(optimizer, **kwargs)
+        # CosineAnnealingLR only needs T_max, not warmup_steps
+        cosine_kwargs = {k: v for k, v in kwargs.items() if k != 'warmup_steps'}
+        return CosineAnnealingLR(optimizer, **cosine_kwargs)
     else:
         raise NotImplementedError(name)
     
